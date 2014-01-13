@@ -1,0 +1,45 @@
+# Specify our error pages.
+ErrorDocument 404 /404.php
+
+<IfModule mod_env.c>
+   SetEnv HTTP_MOD_ENV on
+</ifModule>
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# If this is a request for a plain-text version of a page, translate the extention into a specific
+# request.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/downloads/current/code-text%{REQUEST_URI} -f
+RewriteRule ^(.*\.txt)$ /downloads/current/code-text/$1 [L]
+
+# If this is a request for the JSON version of a law, remap the extension to the cached JSON file.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/downloads/current/code-json%{REQUEST_URI} -f
+RewriteRule ^(.*\.json)$ /downloads/current/code-json/$1 [L]
+
+# If this is a request for the XML version of a law, remap the extension to the cached XML file.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/downloads/current/code-xml%{REQUEST_URI} -f
+RewriteRule ^(.*\.xml)$ /downloads/current/code-xml/$1 [L]
+
+RewriteRule ^index\.php$ - [L]
+
+RewriteRule ^admin/ /index.php [L]
+RewriteRule ^downloads/$ /index.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+
+SetEnv INCLUDE_PATH /Applications/MAMP/includes/
+
+
+SetEnv EDITION_ID 1
